@@ -10,7 +10,6 @@
     "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
   "license": "MIT",
   "description": "",
   "devDependencies": {
@@ -21,7 +20,7 @@
     "sass": "^1.85.1",
     "sass-loader": "^16.0.5",
     "style-loader": "^4.0.0",
-    "tiny-midi-web-components": "^1.0.0-alpha.4",
+    "tiny-midi-web-components": "^1.0.0-alpha.6",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.2",
     "webmidi": "^3.1.12",

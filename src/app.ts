@@ -13,23 +13,31 @@ class AppElement extends HTMLElement {
     tonnetzElement.style.aspectRatio = "auto";
     this.appendChild(tonnetzElement);
 
+    const webMidiTonnetzController = new WebMidiTonnetzController(tonnetzElement);
+
     WebMidi
-      .enable({ sysex: false })
-      .then(onEnabled)
+      .enable()
+      .then(() => {
+        if (WebMidi.inputs.length < 1) {
+          console.log("No device detected.");
+        }
+      })
       .catch(err => alert(err));
 
-    function onEnabled() {
-      if (WebMidi.inputs.length < 1) {
-        console.log("No device detected.");
 
-      } else {
-        WebMidi.inputs.forEach((device, index) => {
-          console.log(`${index}: ${device.name}`);
-          const controller = new WebMidiTonnetzController(tonnetzElement);
-          controller.listen(device);
-        });
+    WebMidi.addListener('connected', event => {
+      if (event.port.type === 'input') {
+        console.log(`[${event.port.id} connected] ${event.port.name}`);
+        webMidiTonnetzController.listen(event.port);
       }
-    }
+    });
+
+    WebMidi.addListener('disconnected', event => {
+      if (event.port.type === 'input') {
+        console.log(`[${event.port.id} disconnected] ${event.port.name}`);
+        webMidiTonnetzController.unlisten(event.port);
+      }
+    });
   }
 }
 
